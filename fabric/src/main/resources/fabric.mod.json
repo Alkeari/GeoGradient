@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "geogradient",
+  "version": "${version}",
+  "name": "GeoGradient",
+  "description": "Latitudinal climate bands for Minecraft — your Z coordinate determines the temperature.",
+  "authors": ["Alkeari"],
+  "license": "LICENSE",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.alkeari.geogradient.fabric.GeoGradientFabric"
+    ]
+  },
+  "mixins": [
+    "geogradient.common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.23",
+    "fabric-api": ">=0.90.4",
+    "minecraft": ">=1.20.1 <1.21",
+    "architectury": ">=9.2.14",
+    "cloth-config2": ">=11.1.136"
+  }
+}
