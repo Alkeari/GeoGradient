@@ -1,10 +1,7 @@
 package net.alkeari.geogradient;
 
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Climate;
-import net.minecraft.world.level.dimension.LevelStem;
 
 import java.lang.reflect.Method;
 
@@ -36,28 +33,23 @@ public final class GeoGradientTerraBlenderBridge {
     private GeoGradientTerraBlenderBridge() {}
 
     /**
-     * Called by Genesis world-preview screen via reflection to initialize GeoGradient
-     * before biome preview rendering begins. Extracts the overworld BiomeSource from
-     * the registry and stores it so findBiomeForPreview can function.
-     * Uses seed 0 for border noise; Genesis will call initialize(long, BiomeSource)
-     * with the real seed when available.
+     * Called by Genesis via reflection when the world-preview screen is closed.
+     * Clears GeoGradient state so the next preview starts fresh.
      */
     @SuppressWarnings("unused")
     public static void reset() {
         GeoGradientClimate.reset();
     }
 
+    /**
+     * Called by Genesis via reflection when opening the world-preview screen.
+     * Genesis initialises the actual seed and biome source separately via
+     * GeoGradientClimate.initialize(long, BiomeSource); this method exists
+     * solely so Genesis can confirm the API is present via reflection.
+     */
     @SuppressWarnings("unused")
     public static void tryInitialize(RegistryAccess registryAccess) {
-        try {
-            LevelStem overworld = registryAccess.registryOrThrow(Registries.LEVEL_STEM)
-                    .get(LevelStem.OVERWORLD);
-            if (overworld == null) return;
-            BiomeSource biomeSource = overworld.generator().getBiomeSource();
-            GeoGradientClimate.initialize(0L, biomeSource);
-        } catch (Exception e) {
-            GeoGradient.LOGGER.warn("GeoGradient: tryInitialize failed", e);
-        }
+        // intentional no-op: Genesis calls initialize(long, BiomeSource) directly
     }
 
     /**
