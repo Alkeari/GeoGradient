@@ -29,7 +29,7 @@ public class GeoGradientForgeConfig {
                 .defineInRange("border_frequency", 0.002, 0.0001, 0.1);
 
         SPAWN_LATITUDE = builder
-                .comment("Controls spawn search latitude. -1.0 = equator (hot), 0.0 = temperate (default), 1.0 = North Pole (cold).")
+                .comment("Controls spawn search latitude. -1.0 = equator (Tropical), 0.0 = temperate (default), 1.0 = north pole (Polar).")
                 .defineInRange("spawn_latitude", 0.0, -1.0, 1.0);
 
         builder.pop();

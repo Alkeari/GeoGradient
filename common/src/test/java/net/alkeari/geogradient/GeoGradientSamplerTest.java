@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class GeoGradientSamplerTest {
 
-    // 99999L is outside GeoGradient's output range of [-15000, 15000], so it can
+    // 99999L is outside GeoGradient's output range of [-10000, 10000], so it can
     // never be produced by sampleTemperature — the assertNotEquals is reliable.
     private static final long TEMPERATURE     = 99999L;
     private static final long HUMIDITY        = 1111L;

@@ -21,16 +21,16 @@ class GeoGradientClimateTest {
 
     @Test
     void halfGlobe_isEquator_hottest() {
-        // Equator is at blockZ = globeSize/2 from spawn
+        // Equator is at blockZ = globeSize/2 from spawn; max vanilla temperature = 1.0
         float temp = GeoGradientClimate.computeRawTemperature(GeoGradientConfig.globeSize / 2.0, GeoGradientConfig.globeSize);
-        assertEquals(1.5f, temp, 0.001f);
+        assertEquals(1.0f, temp, 0.001f);
     }
 
     @Test
     void negativeHalfGlobe_isNorthPole_coldest() {
-        // North Pole is at blockZ = -globeSize/2 from spawn
+        // North Pole is at blockZ = -globeSize/2 from spawn; min vanilla temperature = -1.0
         float temp = GeoGradientClimate.computeRawTemperature(-GeoGradientConfig.globeSize / 2.0, GeoGradientConfig.globeSize);
-        assertEquals(-1.5f, temp, 0.001f);
+        assertEquals(-1.0f, temp, 0.001f);
     }
 
     @Test
@@ -52,43 +52,46 @@ class GeoGradientClimateTest {
     void sampleTemperature_returnsQuantizedValueInRange_afterInit() {
         GeoGradientClimate.initialize(42L);
         long result = GeoGradientClimate.sampleTemperature(0, 0);
-        assertTrue(result >= -15000L && result <= 15000L,
-            "Expected quantized value in [-15000, 15000], got: " + result);
+        assertTrue(result >= -10000L && result <= 10000L,
+            "Expected quantized value in [-10000, 10000], got: " + result);
     }
 
-    // --- zone boundary tests (globeSize=10000, band widths: Polar=1250, Cool=1250, Temperate=5000, Warm=1250, Tropical=1250) ---
+    // --- zone tests — thresholds are vanilla tier boundaries: -0.45, -0.15, +0.20, +0.55 ---
 
     @Test
     void zone_spawn_isTemperate() {
-        // z=0 → temp=0, deep inside Temperate
         assertEquals("Temperate", GeoGradientClimate.getZoneName(0.0f));
     }
 
     @Test
-    void zone_atTemperateCoolBoundary_isCool() {
-        // z=-2500 → temp=-1.061, just outside Temperate into Cool
-        float temp = GeoGradientClimate.computeRawTemperature(-2500.0, GeoGradientConfig.globeSize);
-        assertEquals("Cool", GeoGradientClimate.getZoneName(temp));
-    }
-
-    @Test
-    void zone_atTemperateWarmBoundary_isWarm() {
-        // z=+2500 → temp=+1.061, just outside Temperate into Warm
-        float temp = GeoGradientClimate.computeRawTemperature(2500.0, GeoGradientConfig.globeSize);
-        assertEquals("Warm", GeoGradientClimate.getZoneName(temp));
-    }
-
-    @Test
     void zone_atPole_isPolar() {
-        // z=-5000 → temp=-1.5
+        // z=-5000 → temp=-1.0
         float temp = GeoGradientClimate.computeRawTemperature(-GeoGradientConfig.globeSize / 2.0, GeoGradientConfig.globeSize);
         assertEquals("Polar", GeoGradientClimate.getZoneName(temp));
     }
 
     @Test
     void zone_atEquator_isTropical() {
-        // z=+5000 → temp=+1.5
+        // z=+5000 → temp=+1.0
         float temp = GeoGradientClimate.computeRawTemperature(GeoGradientConfig.globeSize / 2.0, GeoGradientConfig.globeSize);
         assertEquals("Tropical", GeoGradientClimate.getZoneName(temp));
+    }
+
+    @Test
+    void zone_subarcticThreshold() {
+        // Just inside Subarctic (Cold tier: -0.45 to -0.15)
+        assertEquals("Subarctic", GeoGradientClimate.getZoneName(-0.44f));
+    }
+
+    @Test
+    void zone_subtropicalThreshold() {
+        // Just inside Subtropical (Warm tier: 0.20 to 0.55)
+        assertEquals("Subtropical", GeoGradientClimate.getZoneName(0.21f));
+    }
+
+    @Test
+    void zone_tropicalThreshold() {
+        // Just inside Tropical (Hot tier: 0.55 to 1.0)
+        assertEquals("Tropical", GeoGradientClimate.getZoneName(0.56f));
     }
 }

@@ -99,14 +99,12 @@ public class GeoGradientClimate {
     }
 
     public static String getZoneName(float temp) {
-        // sin(π/4)×1.5 ≈ 1.0607; threshold set to 1.060 so the exact boundary z values fall
-        // into Cool/Warm rather than Temperate. sin(3π/8)×1.5 ≈ 1.386 for the Polar boundary.
-        // With globeSize=10000: Temperate spans z ±2500 (5000 blocks), Polar+Cool spans
-        // 2500 blocks from each pole, and Warm+Tropical spans 2500 blocks from each equator.
-        if (temp >  1.386f) return "Tropical";
-        if (temp >  1.060f) return "Warm";
-        if (temp > -1.060f) return "Temperate";
-        if (temp > -1.386f) return "Cool";
+        // Thresholds are the exact vanilla MultiNoise tier boundaries so every
+        // zone transition is a visible terrain change.
+        if (temp >  0.55f) return "Tropical";
+        if (temp >  0.20f) return "Subtropical";
+        if (temp > -0.15f) return "Temperate";
+        if (temp > -0.45f) return "Subarctic";
         return "Polar";
     }
 
@@ -144,7 +142,8 @@ public class GeoGradientClimate {
 
     static float computeRawTemperature(double z, int globeSize) {
         // globeSize = pole-to-equator distance in blocks; full period = 2 * globeSize
+        // Output range [-1.0, +1.0] matches the vanilla MultiNoise temperature range exactly.
         double angle = (z / (globeSize * 2.0)) * 2.0 * Math.PI;
-        return (float) (Math.sin(angle) * 1.5);
+        return (float) Math.sin(angle);
     }
 }

@@ -20,18 +20,20 @@ GeoGradient overrides biome temperature at the selection level, replacing it wit
 
 The world is divided into five climate zones that repeat as you travel north or south:
 
-| Zone | Default Width | Character |
-| --------- | -------------- | ----------------------------------- |
-| **Polar** | 1,250 blocks | Frozen tundra near the poles |
-| **Cool** | 1,250 blocks | Cold and brisk transition belt |
-| **Temperate** | 5,000 blocks | Comfortable mid-latitude climate |
-| **Warm** | 1,250 blocks | Warm and humid transition belt |
-| **Tropical** | 1,250 blocks | Scorching heat near the equators |
+| Zone | Vanilla Tier | Default Width | Character |
+| --------------- | ------------ | -------------- | -------------------------------------------- |
+| **Polar** | Freezing | ~3,500 blocks | Frozen tundra, icy peaks, and snowy plains |
+| **Subarctic** | Cold | ~1,010 blocks | Boreal taiga, windswept hills |
+| **Temperate** | Temperate | ~1,120 blocks | Forests, plains, rivers, and beaches |
+| **Subtropical** | Warm | ~1,210 blocks | Jungles, swamps, and mushroom fields |
+| **Tropical** | Hot | ~3,150 blocks | Deserts, badlands, and savannas |
 
-With the default configuration, **spawn (Z = 0)** is placed in the **Temperate** zone — halfway between the North Pole and the nearest Equator. The Temperate zone stretches 2,500 blocks in each direction from spawn, so new players have plenty of room before reaching harsher climates.
+Each zone boundary corresponds exactly to a vanilla biome tier boundary, so every zone transition is a visible change in terrain and biomes. Widths are approximate — the sine-wave curve is non-linear, so zones near the poles and equators occupy more blocks than central zones.
+
+With the default configuration, **spawn (Z = 0)** is placed in the **Temperate** zone — halfway between the North Pole and the nearest Equator. The Temperate zone spans approximately 1,120 blocks total around spawn.
 
 | Landmark | Block Z | Zone |
-| ------------ | ------- | --------- |
+| ------------ | ------- | ----------- |
 | North Pole | −5,000 | Polar |
 | **Spawn** | 0 | Temperate |
 | Equator | +5,000 | Tropical |
@@ -49,13 +51,13 @@ Rather than drawing perfectly straight horizontal biome boundaries, GeoGradient 
 GeoGradient appends a line to the F3 debug screen showing your current climate data:
 
 ```
-GeoGradient: 1.24 [Tropical] | NP 8320N | EQ 1680S | SP 11680S
+GeoGradient: 0.87 [Tropical] | NP 8320N | EQ 1680S | SP 11680S
 ```
 
 | Field | Meaning |
-| ----------- | ----------------------------------------------------------- |
-| `1.24` | Raw temperature value (−1.5 at poles, +1.5 at equators) |
-| `[Tropical]`| Current climate zone |
+| ------------- | ------------------------------------------------------- |
+| `0.87` | Raw temperature value (−1.0 at poles, +1.0 at equators) |
+| `[Tropical]` | Current climate zone |
 | `NP 8320N` | Nearest North Pole is 8,320 blocks to the north |
 | `EQ 1680S` | Nearest Equator is 1,680 blocks to the south |
 | `SP 11680S` | Nearest South Pole is 11,680 blocks to the south |
