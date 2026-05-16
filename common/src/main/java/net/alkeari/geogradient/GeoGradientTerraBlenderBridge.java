@@ -43,6 +43,11 @@ public final class GeoGradientTerraBlenderBridge {
      * with the real seed when available.
      */
     @SuppressWarnings("unused")
+    public static void reset() {
+        GeoGradientClimate.reset();
+    }
+
+    @SuppressWarnings("unused")
     public static void tryInitialize(RegistryAccess registryAccess) {
         try {
             LevelStem overworld = registryAccess.registryOrThrow(Registries.LEVEL_STEM)
