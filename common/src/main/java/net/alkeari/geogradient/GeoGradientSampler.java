@@ -7,8 +7,8 @@ public final class GeoGradientSampler {
     private GeoGradientSampler() {}
 
     public static Climate.TargetPoint transformClimate(
-            Climate.TargetPoint original, int blockX, int blockZ) {
-        long[] climate = GeoGradientClimate.sampleClimate(blockX, blockZ);
+            Climate.TargetPoint original, int noiseX, int noiseZ) {
+        long[] climate = GeoGradientClimate.sampleClimate(noiseX, noiseZ);
         return new Climate.TargetPoint(
                 climate[0],                  // temperature  — replaced
                 climate[1],                  // humidity     — replaced

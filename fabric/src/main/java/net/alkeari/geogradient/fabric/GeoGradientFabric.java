@@ -30,11 +30,14 @@ public class GeoGradientFabric implements ModInitializer {
             GeoGradientFabricConfig cfg =
                     AutoConfig.getConfigHolder(GeoGradientFabricConfig.class).getConfig();
 
-            GeoGradientConfig.globeSize       = cfg.globe_size;
-            GeoGradientConfig.borderAmplitude  = cfg.border_amplitude;
-            GeoGradientConfig.borderFrequency  = cfg.border_frequency;
-            GeoGradientConfig.spawnLatitude    = cfg.spawn_latitude;
-            GeoGradientConfig.blendFraction   = cfg.blend_fraction;
+            // Clamp to the same ranges Forge enforces via defineInRange, guarding against
+            // hand-edited JSON values (e.g. globe_size = 0 would cause divide-by-zero in
+            // GeoGradientClimate.computeClimate: angle = effectiveZ * 4.0 / (gs * 2.0)).
+            GeoGradientConfig.globeSize       = Math.max(1000, Math.min(1000000, cfg.globe_size));
+            GeoGradientConfig.borderAmplitude = Math.max(0,    Math.min(10000,   cfg.border_amplitude));
+            GeoGradientConfig.borderFrequency = Math.max(0.0001, Math.min(0.1,   cfg.border_frequency));
+            GeoGradientConfig.spawnLatitude   = Math.max(-1.0,   Math.min(1.0,   cfg.spawn_latitude));
+            GeoGradientConfig.blendFraction   = Math.max(0.0,    Math.min(0.5,   cfg.blend_fraction));
 
             GeoGradientClimate.initialize(level.getSeed());
             applySpawnLatitude(level);

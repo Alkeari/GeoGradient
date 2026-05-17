@@ -15,6 +15,7 @@ import java.lang.reflect.Method;
 public final class GeoGradientTerraBlenderBridge {
 
     private static final Method FIND_VALUE_POSITIONAL;
+    private static volatile boolean tbInvokeFailed = false;
 
     static {
         Method m = null;
@@ -70,7 +71,11 @@ public final class GeoGradientTerraBlenderBridge {
         if (FIND_VALUE_POSITIONAL != null) {
             try {
                 return (T) FIND_VALUE_POSITIONAL.invoke(params, target, x, y, z);
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                if (!tbInvokeFailed) {
+                    tbInvokeFailed = true;
+                    GeoGradient.LOGGER.warn("GeoGradient: TerraBlender findValuePositional failed; falling back to vanilla lookup", e);
+                }
                 // fall through to vanilla
             }
         }

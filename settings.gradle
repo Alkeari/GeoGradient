@@ -7,7 +7,7 @@ pluginManagement {
     }
 }
 
-rootProject.name = 'geogradient-1.20.1'
+rootProject.name = 'GeoGradient'
 
 include 'common'
 include 'fabric'

@@ -30,7 +30,7 @@ public class GeoGradientForgeConfig {
                 .defineInRange("border_frequency", 0.002, 0.0001, 0.1);
 
         SPAWN_LATITUDE = builder
-                .comment("Controls spawn search latitude. -1.0 = equator (Tropical), 0.0 = temperate (default), 1.0 = north pole (Polar).")
+                .comment("Controls spawn override latitude. -1.0 = equator (Tropical Dry), 1.0 = north pole (Polar). 0.0 = no override (spawn stays at world default, which is near the equator/Tropical Dry zone).")
                 .defineInRange("spawn_latitude", 0.0, -1.0, 1.0);
 
         BLEND_FRACTION = builder

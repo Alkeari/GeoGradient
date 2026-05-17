@@ -52,7 +52,10 @@ public class GeoGradientClimate {
     private static volatile BiomeSource storedBiomeSource;
 
     public static synchronized void initialize(long seed) {
-        if (initialized) return;
+        // No early-return guard: if an external mod (e.g. Genesis) called the two-arg overload
+        // during a preview with a different seed, we must overwrite here so the real world seed
+        // wins.  reset() is called on world-unload, so double-init within one session is not a
+        // realistic concern.
         WorldgenRandom random = new WorldgenRandom(new LegacyRandomSource(seed ^ 0x47656F47L));
         noise = new SimplexNoise(random);
         initialized = true;
@@ -107,10 +110,10 @@ public class GeoGradientClimate {
         double freq = GeoGradientConfig.borderFrequency;
         double bf   = GeoGradientConfig.blendFraction;
 
-        // Apply border noise warp (x, z in biome-section units; amp in biome-section units).
-        // Multiply by 4.0 to convert biome-section coords to block-equivalent units for
-        // the globeSize comparison (globeSize is in blocks).
-        double effectiveZ = z + noise.getValue(x * freq, z * freq) * amp;
+        // Apply border noise warp. x, z are in biome-section units; amp is in blocks,
+        // so divide by 4.0 to convert to biome-section units before adding to z.
+        // Multiply effectiveZ by 4.0 below to convert back to blocks for the globeSize comparison.
+        double effectiveZ = z + noise.getValue(x * freq, z * freq) * (amp / 4.0);
         double angle      = (effectiveZ * 4.0 / (gs * 2.0)) * 2.0 * Math.PI;
 
         // Normalized distance d from the nearest equator: 0.0 = equator, 1.0 = pole.
@@ -208,7 +211,7 @@ public class GeoGradientClimate {
             int    gs   = GeoGradientConfig.globeSize;
             int    amp  = GeoGradientConfig.borderAmplitude;
             double freq = GeoGradientConfig.borderFrequency;
-            double effectiveZ = noiseZ + noise.getValue(noiseX * freq, noiseZ * freq) * amp;
+            double effectiveZ = noiseZ + noise.getValue(noiseX * freq, noiseZ * freq) * (amp / 4.0);
             double angle      = (effectiveZ * 4.0 / (gs * 2.0)) * 2.0 * Math.PI;
             double modAngle   = ((angle - Math.PI / 2) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
             double distAngle  = modAngle <= Math.PI ? modAngle : 2 * Math.PI - modAngle;
@@ -247,11 +250,16 @@ public class GeoGradientClimate {
     public static int nearestLandmarkNorth(int z, int offset, int period) {
         long k = Math.floorDiv((long) z - offset, period);
         int atOrNorth = (int) (offset + k * period);
-        return (atOrNorth < z) ? atOrNorth : (int) (offset + (k - 1) * period);
+        // Include the landmark itself when z is exactly on it (distance == 0).
+        return (atOrNorth <= z) ? atOrNorth : (int) (offset + (k - 1) * period);
     }
 
     public static int nearestLandmarkSouth(int z, int offset, int period) {
         long k = Math.floorDiv((long) z - offset, period);
-        return (int) (offset + (k + 1) * period);
+        // The floor-division landmark is at or north of z; the next one is strictly south.
+        // When z is exactly on the landmark (offset + k*period == z), return z itself so the
+        // distance is 0 rather than one full period south.
+        int atOrSouth = (int) (offset + k * period);
+        return (atOrSouth >= z) ? atOrSouth : (int) (offset + (k + 1) * period);
     }
 }
