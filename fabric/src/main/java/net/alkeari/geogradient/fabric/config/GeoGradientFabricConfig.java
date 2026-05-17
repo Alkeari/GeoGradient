@@ -20,4 +20,7 @@ public class GeoGradientFabricConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     public double spawn_latitude = 0.0;
+
+    @ConfigEntry.Gui.Tooltip
+    public double blend_fraction = 0.15;
 }

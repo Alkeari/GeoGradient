@@ -43,6 +43,7 @@ public class GeoGradientForge {
         GeoGradientConfig.borderAmplitude  = GeoGradientForgeConfig.BORDER_AMPLITUDE.get();
         GeoGradientConfig.borderFrequency  = GeoGradientForgeConfig.BORDER_FREQUENCY.get();
         GeoGradientConfig.spawnLatitude    = GeoGradientForgeConfig.SPAWN_LATITUDE.get();
+        GeoGradientConfig.blendFraction   = GeoGradientForgeConfig.BLEND_FRACTION.get();
 
         GeoGradientClimate.initialize(level.getSeed());
         applySpawnLatitude(level);

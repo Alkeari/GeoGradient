@@ -9,6 +9,7 @@ public class GeoGradientForgeConfig {
     public static final ForgeConfigSpec.IntValue BORDER_AMPLITUDE;
     public static final ForgeConfigSpec.DoubleValue BORDER_FREQUENCY;
     public static final ForgeConfigSpec.DoubleValue SPAWN_LATITUDE;
+    public static final ForgeConfigSpec.DoubleValue BLEND_FRACTION;
 
     static {
         ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
@@ -31,6 +32,10 @@ public class GeoGradientForgeConfig {
         SPAWN_LATITUDE = builder
                 .comment("Controls spawn search latitude. -1.0 = equator (Tropical), 0.0 = temperate (default), 1.0 = north pole (Polar).")
                 .defineInRange("spawn_latitude", 0.0, -1.0, 1.0);
+
+        BLEND_FRACTION = builder
+                .comment("Width of cosine-blended transition zones at each climate band boundary, as a fraction of the narrower adjacent band. Range [0.0, 0.5].")
+                .defineInRange("blend_fraction", 0.15, 0.0, 0.5);
 
         builder.pop();
         COMMON_SPEC = builder.build();

@@ -34,6 +34,7 @@ public class GeoGradientFabric implements ModInitializer {
             GeoGradientConfig.borderAmplitude  = cfg.border_amplitude;
             GeoGradientConfig.borderFrequency  = cfg.border_frequency;
             GeoGradientConfig.spawnLatitude    = cfg.spawn_latitude;
+            GeoGradientConfig.blendFraction   = cfg.blend_fraction;
 
             GeoGradientClimate.initialize(level.getSeed());
             applySpawnLatitude(level);
