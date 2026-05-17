@@ -77,9 +77,7 @@ public class GeoGradientClimate {
     public static Holder<Biome> findBiomeForPreview(int x, int y, int z, Climate.Sampler sampler) {
         if (noise == null) return null;
         Climate.TargetPoint original = sampler.sample(x, y, z);
-        // NOTE: transformTemperature is updated to transformClimate in Task 3.
-        // Keeping the old name here so Task 2 compiles before the Sampler is rewritten.
-        Climate.TargetPoint adjusted = GeoGradientSampler.transformTemperature(original, x, z);
+        Climate.TargetPoint adjusted = GeoGradientSampler.transformClimate(original, x, z);
         if (storedBiomeSource instanceof MultiNoiseBiomeSourceAccessor acc) {
             return GeoGradientTerraBlenderBridge.findBiome(acc.geogradient$parameters(), adjusted, x, y, z);
         }

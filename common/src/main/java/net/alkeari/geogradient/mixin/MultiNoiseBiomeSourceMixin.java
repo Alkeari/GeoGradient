@@ -36,7 +36,7 @@ public abstract class MultiNoiseBiomeSourceMixin {
     ) {
         if (!GeoGradientClimate.isInitialized()) return;
         Climate.TargetPoint original = sampler.sample(i, j, k);
-        Climate.TargetPoint adjusted = GeoGradientSampler.transformTemperature(original, i, k);
+        Climate.TargetPoint adjusted = GeoGradientSampler.transformClimate(original, i, k);
         cir.setReturnValue(GeoGradientTerraBlenderBridge.findBiome(this.parameters(), adjusted, i, j, k));
     }
 }
