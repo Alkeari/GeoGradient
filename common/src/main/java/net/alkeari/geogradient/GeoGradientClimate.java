@@ -43,7 +43,7 @@ public class GeoGradientClimate {
         });
 
     private static long packKey(int x, int z) {
-        return ((long) x) | ((long) z << 32);
+        return (x & 0xFFFFFFFFL) | ((long) z << 32);
     }
 
     // ── World state ───────────────────────────────────────────────────────────

@@ -120,6 +120,16 @@ class GeoGradientClimateTest {
     }
 
     @Test
+    void sampleClimate_negativeX_distinctZProducesDifferentResults() {
+        // Regression: packKey sign-extension bug collapsed all (x<0, z) to one key.
+        // At x=-100, z=0 (equator) and z=-1250 (pole) must be distinct climate values.
+        long[] equator = GeoGradientClimate.sampleClimate(-100, 1250);
+        long[] pole    = GeoGradientClimate.sampleClimate(-100, -1250);
+        assertFalse(equator[0] == pole[0] && equator[1] == pole[1],
+            "negative-X coords with different Z must produce distinct climate (cache key collision check)");
+    }
+
+    @Test
     void sampleTemperature_backwardCompatShim_returnsTemperatureOnly() {
         long climate = GeoGradientClimate.sampleClimate(0, 1250)[0];
         long legacy  = GeoGradientClimate.sampleTemperature(0, 1250);

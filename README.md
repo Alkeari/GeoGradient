@@ -141,7 +141,7 @@ Configuration is available via the platform's native config system. On **Forge**
 
 ## License
 
-See [LICENSE.md](LICENSE.md).
+See [LICENSE.md](https://github.com/Alkeari/GeoGradient/blob/main/LICENSE.md).
 
 ***
 
