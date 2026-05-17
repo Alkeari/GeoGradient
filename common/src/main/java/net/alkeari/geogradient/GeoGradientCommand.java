@@ -52,9 +52,9 @@ public final class GeoGradientCommand {
         int blockZ = noiseZ << 2;
         GeoGradientClimate.ClimateInfo info = GeoGradientClimate.sampleAt(blockX, blockZ);
         src.sendSuccess(() -> Component.literal(String.format(
-                "§6[GeoGradient]§r at (%d, %d): §eTemp §r%.2f §7[%s]§r | NP %s | EQ %s | SP %s",
+                "§6[GeoGradient]§r at (%d, %d): §eTemp §r%.2f §eHumidity §r%.2f §7[%s]§r | NP %s | EQ %s | SP %s",
                 blockX, blockZ,
-                info.temp(), info.zone(),
+                info.temp(), info.humidity(), info.zone(),
                 formatDist(info.distNP()),
                 formatDist(info.distEQ()),
                 formatDist(info.distSP())
