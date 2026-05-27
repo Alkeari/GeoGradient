@@ -1,0 +1,34 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "LICENSE"
+
+[[mods]]
+modId = "geogradient"
+version = "${version}"
+displayName = "GeoGradient"
+authors = "Alkeari"
+description = "Latitudinal climate bands for Minecraft — your Z coordinate determines the temperature."
+
+[[mixins]]
+    config = "geogradient.common.mixins.json"
+
+[[dependencies.geogradient]]
+    modId = "neoforge"
+    type = "required"
+    versionRange = "[21.1,)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.geogradient]]
+    modId = "minecraft"
+    type = "required"
+    versionRange = "[1.21.1,1.22)"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.geogradient]]
+    modId = "architectury"
+    type = "required"
+    versionRange = "[13.0.8,)"
+    ordering = "NONE"
+    side = "BOTH"
